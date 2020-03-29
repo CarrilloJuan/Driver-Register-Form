@@ -1,14 +1,23 @@
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
-import {DriverRegister} from '../screens';
+import {DriverRegisterScreen, HomeScreen} from '../screens';
 
-const AppNavigator = createStackNavigator(
-  {DriverRegister: DriverRegister},
-  {
-    initialRouteName: 'DriverRegister',
-    headerMode: 'none',
+const routesConfig = {
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
   },
-);
+  DriverRegister: {
+    screen: DriverRegisterScreen,
+    navigationOptions: {
+      title: 'Register',
+    },
+  },
+};
+
+const AppNavigator = createStackNavigator(routesConfig);
 
 export default createAppContainer(AppNavigator);

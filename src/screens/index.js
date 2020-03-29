@@ -1,1 +1,2 @@
-export {default as DriverRegister} from './DriverRegister';
+export {default as DriverRegisterScreen} from './DriverRegister';
+export {default as HomeScreen} from './Home';
