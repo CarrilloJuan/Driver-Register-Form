@@ -1,15 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {Text} from 'react-native-elements';
+import {Text, Button} from 'react-native-elements';
 import EntypoIcons from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import {Input, NumericInput} from '../../components';
+import {useDispatch, useSelector} from 'react-redux';
 import {ScrollView} from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
 
-export default function RegisterForm() {
+import {Input, NumericInput} from '../../components';
+import {registerDriver} from '../../redux/driversSlice';
+
+export default function DriverRegister() {
+  const [registerData, setRegisterData] = useState({
+    name: '',
+    lastName: '',
+    phone: '',
+    age: '',
+    email: '',
+    patent: '',
+    model: '',
+    year: '',
+  });
+
+  const dispatch = useDispatch();
+  const {loading, error} = useSelector(state => ({
+    loading: state.drivers.loading,
+    error: state.drivers.error,
+  }));
+
+  const handleOnChange = ({key, value}) => {
+    setRegisterData(oldState => ({...oldState, [key]: value}));
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -20,18 +43,21 @@ export default function RegisterForm() {
             </Text>
             <Input
               placeholder="Nombre"
+              onChangeText={value => handleOnChange({key: 'name', value})}
               leftIcon={() => (
                 <FontAwesome name="user" size={24} color="black" />
               )}
             />
             <Input
               placeholder="Apellido"
+              onChangeText={value => handleOnChange({key: 'lastName', value})}
               leftIcon={() => (
                 <FontAwesome name="user" size={24} color="black" />
               )}
             />
             <Input
               placeholder="Número telefónico"
+              onChangeText={value => handleOnChange({key: 'phone', value})}
               leftIcon={() => (
                 <FontAwesome name="mobile-phone" size={24} color="black" />
               )}
@@ -44,9 +70,11 @@ export default function RegisterForm() {
               leftIcon={() => (
                 <FontAwesome name="user" size={24} color="black" />
               )}
+              onChangeText={value => handleOnChange({key: 'age', value})}
             />
             <Input
               placeholder="Email"
+              onChangeText={value => handleOnChange({key: 'email', value})}
               leftIcon={() => (
                 <EntypoIcons name="email" size={24} color="black" />
               )}
@@ -59,23 +87,32 @@ export default function RegisterForm() {
             </Text>
             <Input
               placeholder="Patente"
+              onChangeText={value => handleOnChange({key: 'patent', value})}
               leftIcon={() => (
                 <EntypoIcons name="text-document" size={24} color="black" />
               )}
             />
             <Input
               placeholder="Modelo"
+              onChangeText={value => handleOnChange({key: 'model', value})}
               leftIcon={() => (
                 <Ionicons name="logo-model-s" size={24} color="black" />
               )}
             />
             <Input
               placeholder="Año"
+              onChangeText={value => handleOnChange({key: 'year', value})}
               leftIcon={() => (
                 <FontAwesome name="calendar" size={24} color="black" />
               )}
             />
           </View>
+
+          <Button
+            title="Solid Button"
+            onPress={() => dispatch(registerDriver(registerData))}
+            loading={loading}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -4,13 +4,18 @@ import {Text} from 'react-native-elements';
 
 import NumericInput from 'react-native-numeric-input';
 
-export default function CustomNumericInput({leftIcon, label, ...props}) {
+export default function CustomNumericInput({
+  leftIcon,
+  label,
+  onChangeText,
+  ...props
+}) {
   return (
     <View style={styles.container}>
       <View style={styles.inputGroup}>
         {leftIcon && leftIcon}
         {label && <Text style={styles.label}>{label}</Text>}
-        <NumericInput onChange={value => console.log(value)} {...props} />
+        <NumericInput onChange={value => onChangeText(value)} {...props} />
       </View>
     </View>
   );
