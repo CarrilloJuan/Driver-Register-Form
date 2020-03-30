@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {ScrollView} from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
+import PropTypes from 'prop-types';
 
 import {Input, NumericInput, Text} from '../../components';
 import {upSertDriver} from '../../redux/driversSlice';
@@ -138,3 +139,7 @@ export default function DriverRegister({navigation}) {
     </SafeAreaView>
   );
 }
+
+DriverRegister.propTypes = {
+  navigation: PropTypes.shape({navigate: PropTypes.func}),
+};

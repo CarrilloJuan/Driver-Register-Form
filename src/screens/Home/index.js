@@ -1,5 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
+import PropTypes from 'prop-types';
+
 import {Button} from 'react-native-elements';
 import {useSelector} from 'react-redux';
 
@@ -37,3 +39,7 @@ export default function Home({navigation}) {
     </View>
   );
 }
+
+Home.propTypes = {
+  navigation: PropTypes.shape({navigate: PropTypes.func}),
+};

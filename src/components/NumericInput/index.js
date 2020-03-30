@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from 'react-native-elements';
+import PropTypes from 'prop-types';
 
 import NumericInput from 'react-native-numeric-input';
 
@@ -37,3 +38,8 @@ export default function CustomNumericInput({
     </View>
   );
 }
+
+CustomNumericInput.propTypes = {
+  label: PropTypes.string,
+  onChangeText: PropTypes.func,
+};
