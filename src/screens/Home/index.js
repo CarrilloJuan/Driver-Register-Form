@@ -1,7 +1,9 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text, Button} from 'react-native-elements';
+import {Button} from 'react-native-elements';
 import {useSelector} from 'react-redux';
+
+import {Text} from '../../components';
 
 const styles = StyleSheet.create({
   container: {

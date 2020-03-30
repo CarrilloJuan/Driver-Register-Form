@@ -7,7 +7,6 @@ const mocks = {
 
 export const getMockError = config => {
   const {url, method} = config;
-  console.log({url, method});
   const mockError = new Error();
   mockError.mockData = mocks[url] && mocks[url][method];
   mockError.config = config;

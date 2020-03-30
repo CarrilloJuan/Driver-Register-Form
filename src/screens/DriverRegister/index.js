@@ -1,28 +1,17 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {Text, Button} from 'react-native-elements';
+import {Button} from 'react-native-elements';
 import EntypoIcons from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {ScrollView} from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import {Input, NumericInput} from '../../components';
+import {Input, NumericInput, Text} from '../../components';
 import {upSertDriver} from '../../redux/driversSlice';
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    padding: 20,
-  },
-  inputGroup: {
-    marginVertical: 8,
-  },
-  inputGrouptitle: {
-    textAlign: 'center',
-  },
-});
+import {validateData, isError} from '../../util';
+import styles from './styles';
 
 export default function DriverRegister({navigation}) {
   const dispatch = useDispatch();
@@ -32,12 +21,22 @@ export default function DriverRegister({navigation}) {
   }));
 
   const [driver, setDriver] = useState(currentDriverInfo || {});
+  const [errors, setErrors] = useState([]);
 
   const handleOnChange = ({key, value}) => {
     setDriver(oldState => ({...oldState, [key]: value}));
   };
 
   const isUpdating = currentDriverInfo && true;
+
+  const handleOnSubmit = data => {
+    const validationErrors = validateData(data);
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    dispatch(upSertDriver(data, isUpdating, navigation));
+  };
 
   return (
     <SafeAreaView>
@@ -54,6 +53,7 @@ export default function DriverRegister({navigation}) {
               leftIcon={() => (
                 <FontAwesome name="user" size={24} color="black" />
               )}
+              errorMessage={isError(errors, 'name')}
             />
             <Input
               value={driver.lastName}
@@ -62,6 +62,7 @@ export default function DriverRegister({navigation}) {
               leftIcon={() => (
                 <FontAwesome name="user" size={24} color="black" />
               )}
+              errorMessage={isError(errors, 'lastName')}
             />
             <Input
               value={driver.phone}
@@ -70,6 +71,7 @@ export default function DriverRegister({navigation}) {
               leftIcon={() => (
                 <FontAwesome name="mobile-phone" size={24} color="black" />
               )}
+              errorMessage={isError(errors, 'phone')}
             />
             <NumericInput
               value={driver.age ? Number(driver.age) : 21}
@@ -88,6 +90,7 @@ export default function DriverRegister({navigation}) {
               leftIcon={() => (
                 <EntypoIcons name="email" size={24} color="black" />
               )}
+              errorMessage={isError(errors, 'email')}
             />
           </View>
 
@@ -102,6 +105,7 @@ export default function DriverRegister({navigation}) {
               leftIcon={() => (
                 <EntypoIcons name="text-document" size={24} color="black" />
               )}
+              errorMessage={isError(errors, 'patent')}
             />
             <Input
               value={driver.model}
@@ -110,6 +114,7 @@ export default function DriverRegister({navigation}) {
               leftIcon={() => (
                 <Ionicons name="logo-model-s" size={24} color="black" />
               )}
+              errorMessage={isError(errors, 'model')}
             />
             <Input
               value={driver.year}
@@ -118,15 +123,15 @@ export default function DriverRegister({navigation}) {
               leftIcon={() => (
                 <FontAwesome name="calendar" size={24} color="black" />
               )}
+              errorMessage={isError(errors, 'year')}
             />
           </View>
 
           <Button
-            title="Register"
-            onPress={() =>
-              dispatch(upSertDriver(driver, isUpdating, navigation))
-            }
+            title={isUpdating ? 'Actualizar' : 'Registrese'}
+            onPress={() => handleOnSubmit(driver)}
             loading={loading}
+            style={styles.button}
           />
         </View>
       </ScrollView>
