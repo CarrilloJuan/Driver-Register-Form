@@ -57,8 +57,12 @@ export const upSertDriver = (
 ) => async dispatch => {
   dispatch(upSertDriverStart());
   try {
-    const apiRequest = isUpdating ? apiClient.put : apiClient.post;
-    const response = await apiRequest('driver', data);
+    let response;
+    if (isUpdating) {
+      response = await apiClient.put(`driver/${data.id}`, data);
+    } else {
+      response = await apiClient.post('driver', data);
+    }
     dispatch(upSertDriverSuccess({id: response.data.id, ...data}));
     navigation.replace('Home');
   } catch (error) {
